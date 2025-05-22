@@ -1,24 +1,25 @@
-<!-- ficheiro: index.html -->
+<!-- index.html - Página Inicial -->
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <title>Gestão de Imobiliário - Início</title>
-    <link rel="stylesheet" href="styles/style.css">
+  <meta charset="UTF-8">
+  <title>Página Inicial</title>
+  <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
-    <h1>Bem-vindo à Plataforma de Gestão de Imobiliário</h1>
-    
-    <form action="dashboard.html" method="post">
-        <label for="username">Utilizador:</label>
-        <input type="text" id="username" name="username" required>
-
-        <label for="password">Senha:</label>
-        <input type="password" id="password" name="password" required>
-
-        <button type="submit">Entrar</button>
-    </form>
-
-    <p><a href="sobre.html">Sobre a aplicação</a></p>
+  <header>
+    <h1>Imóveis+</h1>
+    <nav>
+      <a href="login.html">Login</a>
+    </nav>
+  </header>
+  <main>
+    <h2>Imóveis em Destaque</h2>
+    <section class="imovel">
+      <img src="images/casa1.jpg" alt="Casa exemplo">
+      <p><strong>Moradia A</strong></p>
+      <p>Lisboa - 250.000€</p>
+    </section>
+  </main>
 </body>
 </html>
