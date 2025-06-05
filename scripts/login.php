@@ -1,5 +1,5 @@
 <?php
-$db = new SQLite3('../dados/imobiliaria.db');
+$db = new SQLite3('../DADOS/imobiliaria.db');
 session_start();
 
 $username = $_POST['username'] ?? '';
