@@ -1,4 +1,6 @@
 <?php
+// Script para registar novo utilizador
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"] ?? "";
     $password = $_POST["password"] ?? "";
@@ -8,8 +10,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Por favor, preencha todos os campos.");
     }
 
-    $db = new SQLite3(__DIR__ . '/../dados/imobiliaria.db');
+    // Abrir ou criar a base de dados
+    $db = new SQLite3(__DIR__ . '/../dados/app.db');
 
+    // Criar a tabela se ainda não existir
     $db->exec("CREATE TABLE IF NOT EXISTS utilizadores (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE,
@@ -18,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ultimo_acesso TEXT
     )");
 
+    // Verificar se já existe
     $stmt = $db->prepare("SELECT * FROM utilizadores WHERE username = :username");
     $stmt->bindValue(":username", $username);
     $result = $stmt->execute();
