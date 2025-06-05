@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     header("Location: ../HTML/comprador.html");
                     break;
                 case 'vendedor':
-                    header("Location: ../HTML/vendedor.html");
+                    header("Location: ../scripts/vendedor.php");
                     break;
                 case 'agente':
                     header("Location: ../HTML/agente.html");
