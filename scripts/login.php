@@ -1,45 +1,149 @@
 <?php
-$db = new SQLite3('../DADOS/imobiliaria.db');
+
 session_start();
 
-$username = $_POST['username'] ?? '';
-$password = $_POST['password'] ?? '';
+ 
 
-if (empty($username) || empty($password)) {
-    die("Por favor, preencha todos os campos.");
-}
+$mensagem = "";
 
-// Buscar o utilizador pelo username
-$stmt = $db->prepare('SELECT * FROM utilizadores WHERE username = ?');
-$stmt->bindValue(1, $username);
-$result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+ 
 
-if ($result && password_verify($password, $result['password'])) {
-    $_SESSION['user'] = $result;
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    // Atualiza o último acesso
-    $update = $db->prepare('UPDATE utilizadores SET ultimo_acesso = datetime("now") WHERE id = ?');
-    $update->bindValue(1, $result['id']);
-    $update->execute();
+    $db = new SQLite3('../DADOS/imobiliaria.db');
 
-    // Redirecionamento com base no tipo
-    switch ($result['tipo']) {
-        case 'comprador':
-            header("Location: comprador.php");
+ 
+
+    $username = $_POST['username'] ?? '';
+
+    $password = $_POST['password'] ?? '';
+
+ 
+
+    if (empty($username) || empty($password)) {
+
+        $mensagem = "Por favor, preencha todos os campos.";
+
+    } else {
+
+        $stmt = $db->prepare('SELECT * FROM utilizadores WHERE username = ?');
+
+        $stmt->bindValue(1, $username);
+
+        $user = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+
+ 
+
+        if ($user && password_verify($password, $user['password'])) {
+
+            $_SESSION['user'] = $user;
+
+            $_SESSION['username'] = $user['username'];
+
+            $_SESSION['tipo'] = $user['tipo'];
+
+            $_SESSION['id'] = $user['id'];
+
+ 
+
+            $update = $db->prepare('UPDATE utilizadores SET ultimo_acesso = datetime("now") WHERE id = ?');
+
+            $update->bindValue(1, $user['id']);
+
+            $update->execute();
+
+ 
+
+            // Redirecionar para página consoante o tipo
+
+            switch ($user['tipo']) {
+
+                case 'comprador':
+
+                    header("Location: ../HTML/comprador.html");
+
+                    break;
+
+                case 'vendedor':
+
+                    header("Location: ../HTML/vendedor.html");
+
+                    break;
+
+                case 'agente':
+
+                    header("Location: ../HTML/agente.html");
+
+                    break;
+
+            }
+
             exit;
-        case 'vendedor':
-        case 'dono': // Se usares 'dono' em vez de 'vendedor'
-            header("Location: vendedor.php");
-            exit;
-        case 'agente':
-            header("Location: agente.php");
-            exit;
-        default:
-            echo "Tipo de utilizador desconhecido.";
-            exit;
+
+        } else {
+
+            $mensagem = "Utilizador ou palavra-passe incorretos.";
+
+        }
+
     }
 
-} else {
-    echo "Credenciais inválidas!";
 }
+
 ?>
+
+ 
+
+<!-- HTML apenas aparece se ainda não houve redirecionamento -->
+
+<!DOCTYPE html>
+
+<html lang="pt">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <title>Login</title>
+
+  <link rel="stylesheet" href="../styles/modelo.css">
+
+</head>
+
+<body>
+
+  <main class="login">
+
+    <h1>Login</h1>
+
+    <?php if (!empty($mensagem)) : ?>
+
+      <p style="color:red;"><?php echo $mensagem; ?></p>
+
+    <?php endif; ?>
+
+    <form action="login.php" method="post">
+
+      <label>Nome de Utilizador:</label>
+
+      <input type="text" name="username" required>
+
+ 
+
+      <label>Palavra-passe:</label>
+
+      <input type="password" name="password" required>
+
+ 
+
+      <button type="submit">Entrar</button>
+
+    </form>
+
+    <a href="novoregisto.html">Criar conta</a>
+
+  </main>
+
+</body>
+
+</html>
