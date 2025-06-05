@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             switch ($user['tipo']) {
                 case 'comprador':
-                    header("Location: ../HTML/comprador.html");
+                    header("Location: ../scripts/comprador.php");
                     break;
                 case 'vendedor':
                     header("Location: ../scripts/vendedor.php");
