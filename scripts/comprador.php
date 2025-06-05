@@ -1,26 +1,39 @@
 <?php
 session_start();
 
+// Simular login de teste (apaga esta parte quando usares sessão real)
+$_SESSION['tipo'] = 'comprador';
+$_SESSION['username'] = 'joao123';
+$_SESSION['id'] = 1;
+
+// Verificar tipo de utilizador
 if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== 'comprador') {
     header("Location: ../scripts/login.php");
     exit;
 }
 
-$comprador_id = $_SESSION['id'];
 $username = $_SESSION['username'];
 
-$db = new SQLite3('../DADOS/imobiliaria.db');
+// Exemplos fictícios
+$imoveis_exemplo = [
+    [
+        'id' => 1,
+        'titulo' => 'Moradia A',
+        'localizacao' => 'Lisboa',
+        'preco' => 250000
+    ],
+    [
+        'id' => 2,
+        'titulo' => 'Apartamento B',
+        'localizacao' => 'Porto',
+        'preco' => 180000
+    ]
+];
 
-$imoveis = $db->query("SELECT * FROM imoveis WHERE estado = 'aprovado'");
-
-$propostas = $db->prepare("
-    SELECT i.titulo, p.estado
-    FROM propostas p
-    JOIN imoveis i ON p.imovel_id = i.id
-    WHERE p.comprador_id = ?
-");
-$propostas->bindValue(1, $comprador_id);
-$res_propostas = $propostas->execute();
+$propostas_exemplo = [
+    ['titulo' => 'Moradia A', 'estado' => 'Em análise'],
+    ['titulo' => 'Apartamento B', 'estado' => 'Aceite']
+];
 ?>
 
 <!DOCTYPE html>
@@ -56,46 +69,36 @@ $res_propostas = $propostas->execute();
     <h1>Imóveis CDT</h1>
     <nav>
       <span>Bem-vindo, <?php echo htmlspecialchars($username); ?></span>
-      <a class="btn" href="../scripts/logout.php">Logout</a>
+      <a class="btn" href="#">Logout</a>
     </nav>
   </header>
 
   <main>
     <h2>Propriedades Disponíveis</h2>
     <div class="container">
-      <?php while ($imovel = $imoveis->fetchArray(SQLITE3_ASSOC)) : ?>
+      <?php foreach ($imoveis_exemplo as $imovel) : ?>
         <article class="imovel">
           <img src="../images/casa<?php echo rand(1,3); ?>.jpg" alt="Imagem do imóvel">
           <p><strong><?php echo htmlspecialchars($imovel['titulo']); ?></strong></p>
           <p><?php echo htmlspecialchars($imovel['localizacao']); ?> - <?php echo number_format($imovel['preco'], 2); ?>€</p>
 
-          <form action="pedir_info.php" method="POST">
-            <input type="hidden" name="imovel_id" value="<?php echo $imovel['id']; ?>">
+          <form action="#" method="POST">
             <button type="submit">Pedir Informação</button>
           </form>
 
-          <form action="fazer_proposta.php" method="POST">
-            <input type="hidden" name="imovel_id" value="<?php echo $imovel['id']; ?>">
+          <form action="#" method="POST">
             <input type="number" name="valor" placeholder="Valor da Proposta (€)" required>
             <button type="submit">Fazer Proposta</button>
           </form>
         </article>
-      <?php endwhile; ?>
+      <?php endforeach; ?>
     </div>
 
     <h2>Minhas Negociações</h2>
     <section class="negociacoes">
-      <?php
-      $tem_negociacoes = false;
-      while ($p = $res_propostas->fetchArray(SQLITE3_ASSOC)) :
-        $tem_negociacoes = true;
-      ?>
+      <?php foreach ($propostas_exemplo as $p) : ?>
         <p><strong><?php echo htmlspecialchars($p['titulo']); ?></strong> — Estado: <?php echo htmlspecialchars($p['estado']); ?></p>
-      <?php endwhile; ?>
-
-      <?php if (!$tem_negociacoes) : ?>
-        <p>Sem negociações ativas.</p>
-      <?php endif; ?>
+      <?php endforeach; ?>
     </section>
   </main>
 </body>
