@@ -42,12 +42,19 @@ $mensagens = [
       display: none; /* escondido até clicar */
     }
     #fecharDetalhes {
-      background: transparent;
+      background: black;
+      color: white;
       border: none;
       font-size: 1.5rem;
       cursor: pointer;
       font-weight: bold;
       line-height: 1;
+      padding: 0 0.5rem;
+      border-radius: 3px;
+      transition: background-color 0.3s ease;
+    }
+    #fecharDetalhes:hover {
+      background: #333;
     }
   </style>
 </head>
