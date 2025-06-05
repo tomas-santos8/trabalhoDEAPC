@@ -16,7 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt->bindValue(1, $email);
         $user = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
 
-        if ($user && password_verify($password, $user['password'])) {
+        // Comparação direta (sem hash)
+        if ($user && $password === $user['password']) {
             $_SESSION['user'] = $user;
             $_SESSION['username'] = $user['username'];
             $_SESSION['tipo'] = $user['tipo'];
@@ -26,13 +27,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $update->bindValue(1, $user['id']);
             $update->execute();
 
-            // Redirecionar para página consoante o tipo
             switch ($user['tipo']) {
                 case 'comprador':
                     header("Location: ../HTML/comprador.html");
                     break;
                 case 'vendedor':
-                    header("Location: ../HTML/vendedor.html");
+                    header("Location: ../scripts/vendedor.php");
                     break;
                 case 'agente':
                     header("Location: ../HTML/agente.html");
@@ -46,7 +46,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ?>
 
-<!-- HTML apenas aparece se ainda não houve redirecionamento -->
 <!DOCTYPE html>
 <html lang="pt">
 <head>
