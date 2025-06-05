@@ -2,11 +2,9 @@
 
 session_start();
 
- 
 
 $mensagem = "";
 
- 
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -14,21 +12,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
  
 
-    $username = $_POST['username'] ?? '';
+    $email = $_POST['email'] ?? '';
 
     $password = $_POST['password'] ?? '';
 
  
 
-    if (empty($username) || empty($password)) {
+    if (empty($email) || empty($password)) {
 
         $mensagem = "Por favor, preencha todos os campos.";
 
     } else {
 
-        $stmt = $db->prepare('SELECT * FROM utilizadores WHERE username = ?');
+        $stmt = $db->prepare('SELECT * FROM utilizadores WHERE email = ?');
 
-        $stmt->bindValue(1, $username);
+        $stmt->bindValue(1, $email);
 
         $user = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
 
@@ -126,7 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
       <label>Nome de Utilizador:</label>
 
-      <input type="text" name="username" required>
+      <input type="text" name="email" required>
 
  
 
