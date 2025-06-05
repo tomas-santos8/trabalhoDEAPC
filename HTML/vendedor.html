@@ -7,19 +7,36 @@
   <link rel="stylesheet" href="../styles/style.css">
 </head>
 <body>
+  <header>
+    <h1>Área do Vendedor</h1>
+    <nav>
+      <a href="index.html" class="btn">Início</a>
+      <a href="adicionar-imovel.html" class="btn">Adicionar Imóvel</a>
+      <a href="logout.html" class="btn">Sair</a>
+    </nav>
+  </header>
+
   <main>
-    <h1>Gestão de Imóveis</h1>
     <section>
       <h2>Meus Imóveis</h2>
+
       <article class="imovel">
         <img src="images/casa2.jpg" alt="Moradia X">
-        <p>Porto - 300.000€</p>
-        <p>Propostas Recebidas: 280.000€</p>
+        <p><strong>Localização:</strong> Porto</p>
+        <p><strong>Preço:</strong> 300.000€</p>
+        <p><strong>Propostas Recebidas:</strong> 280.000€</p>
+        <button>Ver Detalhes</button>
       </article>
+
+      <!-- Podes adicionar mais imóveis copiando o bloco acima -->
     </section>
+
     <section>
       <h2>Mensagens</h2>
-      <p>Agente: "Temos uma nova proposta."</p>
+      <div class="imovel">
+        <p><strong>Agente:</strong> Temos uma nova proposta.</p>
+        <p><strong>Cliente:</strong> Gostaria de visitar a casa este sábado.</p>
+      </div>
     </section>
   </main>
 </body>
