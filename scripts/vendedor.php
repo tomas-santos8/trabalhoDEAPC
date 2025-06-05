@@ -2,9 +2,9 @@
 $imoveis = [
     [
         "imagem" => "images/casa2.jpg",
-        "localizacao" => "Porto",
-        "preco" => 300000,
-        "propostas" => 280000,
+        "localizacao" => "Cortegaça",
+        "preco" => 450000,
+        "propostas" => 400000,
         "descricao" => "Moradia moderna com 3 quartos, jardim e garagem."
     ],
     [
@@ -12,7 +12,7 @@ $imoveis = [
         "localizacao" => "Lisboa",
         "preco" => 450000,
         "propostas" => 440000,
-        "descricao" => "Apartamento T2 no centro com varanda e vista rio."
+        "descricao" => "casa de luxo."
     ]
 ];
 
