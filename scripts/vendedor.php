@@ -41,6 +41,14 @@ $mensagens = [
       border-left: 2px solid #ccc;
       display: none; /* escondido até clicar */
     }
+    #fecharDetalhes {
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      font-weight: bold;
+      line-height: 1;
+    }
   </style>
 </head>
 <body>
@@ -63,14 +71,17 @@ $mensagens = [
           <p><strong>Localização:</strong> <?= htmlspecialchars($imovel['localizacao']) ?></p>
           <p><strong>Preço:</strong> <?= number_format($imovel['preco'], 0, ',', '.') ?>€</p>
           <p><strong>Propostas Recebidas:</strong> <?= number_format($imovel['propostas'], 0, ',', '.') ?>€</p>
-          <button onclick="verDetalhes(<?= htmlspecialchars(json_encode($imovel)) ?>)">Ver Detalhes</button>
+          <button onclick='verDetalhes(<?= htmlspecialchars(json_encode($imovel)) ?>)'>Ver Detalhes</button>
         </article>
       <?php endforeach; ?>
     </section>
 
     <!-- Coluna dos detalhes -->
     <section id="detalhes" class="coluna">
-      <h2>Detalhes do Imóvel</h2>
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2>Detalhes do Imóvel</h2>
+        <button id="fecharDetalhes" aria-label="Fechar detalhes">×</button>
+      </div>
       <div id="detalhe-conteudo">
         <p>Seleciona um imóvel para ver os detalhes.</p>
       </div>
@@ -89,8 +100,12 @@ $mensagens = [
         <p><strong>Propostas Recebidas:</strong> ${imovel.propostas.toLocaleString('pt-PT')}€</p>
         <p><strong>Descrição:</strong> ${imovel.descricao}</p>
       `;
-      detalhes.style.display = 'block'; // mostra a coluna dos detalhes
+      detalhes.style.display = 'block';
     }
+
+    document.getElementById('fecharDetalhes').addEventListener('click', () => {
+      document.getElementById('detalhes').style.display = 'none';
+    });
   </script>
 </body>
 </html>
