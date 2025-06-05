@@ -22,7 +22,23 @@ if ($result && password_verify($password, $result['password'])) {
     $update->bindValue(1, $result['id']);
     $update->execute();
 
-    echo "Login com sucesso!";
+    // Redirecionamento com base no tipo
+    switch ($result['tipo']) {
+        case 'comprador':
+            header("Location: comprador.php");
+            exit;
+        case 'vendedor':
+        case 'dono': // Se usares 'dono' em vez de 'vendedor'
+            header("Location: vendedor.php");
+            exit;
+        case 'agente':
+            header("Location: agente.php");
+            exit;
+        default:
+            echo "Tipo de utilizador desconhecido.";
+            exit;
+    }
+
 } else {
     echo "Credenciais inválidas!";
 }
