@@ -3,7 +3,7 @@ session_start();
 
 // Simulação de sessão para demonstração
 $_SESSION['tipo'] = 'comprador';
-$_SESSION['username'] = 'joao123';
+$_SESSION['username'] = 'tomas';
 $_SESSION['id'] = 1;
 
 // Segurança: só compradores entram
