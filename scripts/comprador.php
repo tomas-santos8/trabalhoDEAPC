@@ -1,42 +1,3 @@
-<?php
-session_start();
-
-// Simulação de sessão para demonstração
-$_SESSION['tipo'] = 'comprador';
-$_SESSION['username'] = 'tomas';
-$_SESSION['id'] = 1;
-
-// Segurança: só compradores entram
-if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== 'comprador') {
-    header("Location: ../scripts/login.php");
-    exit;
-}
-
-$username = $_SESSION['username'];
-
-// Imóveis fictícios
-$imoveis_exemplo = [
-    [
-        'id' => 1,
-        'titulo' => 'Moradia A',
-        'localizacao' => 'Lisboa',
-        'preco' => 250000
-    ],
-    [
-        'id' => 2,
-        'titulo' => 'Apartamento B',
-        'localizacao' => 'Porto',
-        'preco' => 180000
-    ]
-];
-
-// Propostas fictícias
-$propostas_exemplo = [
-    ['titulo' => 'Moradia A', 'estado' => 'Em análise'],
-    ['titulo' => 'Apartamento B', 'estado' => 'Aceite']
-];
-?>
-
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -53,19 +14,10 @@ $propostas_exemplo = [
     .imovel {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
     }
 
     .imovel form {
-      width: 100%;
       margin-top: 0.5rem;
-    }
-
-    .imovel input[type="number"] {
-      margin-top: 0.5rem;
-      padding: 0.5rem;
-      width: 100%;
-      box-sizing: border-box;
     }
 
     .negociacoes {
@@ -78,10 +30,24 @@ $propostas_exemplo = [
 
     .negociacoes p {
       margin: 0.75rem 0;
+      font-size: 1rem;
     }
 
     nav span {
       font-weight: bold;
+    }
+
+    .imovel p {
+      margin: 0.4rem 0;
+    }
+
+    .imovel input[type="number"] {
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 5px;
     }
   </style>
 </head>
@@ -104,12 +70,12 @@ $propostas_exemplo = [
           <p><?php echo htmlspecialchars($imovel['localizacao']); ?> – <?php echo number_format($imovel['preco'], 2); ?>€</p>
 
           <form action="#" method="POST">
-            <button type="submit">Pedir Informação</button>
+            <button type="submit">📄 Pedir Informação</button>
           </form>
 
           <form action="#" method="POST">
             <input type="number" name="valor" placeholder="Valor da Proposta (€)" required>
-            <button type="submit">Fazer Proposta</button>
+            <button type="submit">💶 Fazer Proposta</button>
           </form>
         </article>
       <?php endforeach; ?>
@@ -118,7 +84,10 @@ $propostas_exemplo = [
     <h2>Minhas Negociações</h2>
     <section class="negociacoes">
       <?php foreach ($propostas_exemplo as $p) : ?>
-        <p><strong><?php echo htmlspecialchars($p['titulo']); ?></strong> — Estado: <?php echo htmlspecialchars($p['estado']); ?></p>
+        <p><strong><?php echo htmlspecialchars($p['titulo']); ?></strong> — Estado: 
+        <span style="color: <?php echo $p['estado'] === 'Aceite' ? '#44bd32' : '#f39c12'; ?>">
+          <?php echo htmlspecialchars($p['estado']); ?>
+        </span></p>
       <?php endforeach; ?>
     </section>
   </main>
