@@ -5,17 +5,38 @@ $_SESSION['username'] = 'tomas';
 $_SESSION['id'] = 1;
 
 if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== 'comprador') {
-    header("Location: ../scripts/login.php");
+    header("Location: login.php");
     exit;
 }
 
 $username = $_SESSION['username'];
 
-$imoveis_exemplo = [
-    ['id' => 1, 'titulo' => 'Moradia A', 'localizacao' => 'Lisboa', 'preco' => 250000],
-    ['id' => 2, 'titulo' => 'Apartamento B', 'localizacao' => 'Porto', 'preco' => 180000]
-];
+// Ligação à base de dados de imóveis
+$db = new SQLite3('../DADOS/imoveis.db');
+$result = $db->query("SELECT * FROM imoveis");
 
+$imoveis_exemplo = [];
+while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+    $imoveis_exemplo[] = $row;
+}
+
+// Ligação à base de dados de mensagens
+$mensagensDB = new SQLite3('../DADOS/mensagens.db');
+
+// Guardar nova mensagem (se enviada)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['mensagem'])) {
+    $mensagem = trim($_POST['mensagem']);
+    if (!empty($mensagem)) {
+        $stmt = $mensagensDB->prepare("INSERT INTO mensagens (remetente, destinatario, mensagem)
+                                       VALUES (:remetente, :destinatario, :mensagem)");
+        $stmt->bindValue(':remetente', $username);
+        $stmt->bindValue(':destinatario', 'agente');
+        $stmt->bindValue(':mensagem', $mensagem);
+        $stmt->execute();
+    }
+}
+
+// ✅ Propostas fictícias mantidas
 $propostas_exemplo = [
     ['titulo' => 'Moradia A', 'estado' => 'Em análise'],
     ['titulo' => 'Apartamento B', 'estado' => 'Aceite']
@@ -102,7 +123,7 @@ $propostas_exemplo = [
       margin-top: 1rem;
     }
 
-    .negociacoes {
+    .negociacoes, .mensagens {
       background-color: white;
       padding: 1.5rem;
       border-radius: 10px;
@@ -121,6 +142,12 @@ $propostas_exemplo = [
     .status.analise {
       color: #f39c12;
     }
+
+    nav span {
+      font-weight: bold;
+      color: #fff;
+      margin-right: 1rem;
+    }
   </style>
 </head>
 <body>
@@ -128,7 +155,7 @@ $propostas_exemplo = [
     <h1>Imóveis CDT</h1>
     <nav>
       <span>Bem-vindo, <?php echo htmlspecialchars($username); ?></span>
-      <a class="btn" href="#">Logout</a>
+      <a class="btn" href="logout.php">Logout</a>
     </nav>
   </header>
 
@@ -137,7 +164,7 @@ $propostas_exemplo = [
     <div class="container">
       <?php foreach ($imoveis_exemplo as $imovel): ?>
         <article class="imovel">
-          <img src="../images/casa<?php echo rand(1,3); ?>.jpg" alt="Imagem do imóvel">
+          <img src="../<?php echo htmlspecialchars($imovel['imagem'] ?? 'images/casa1.jpg'); ?>" alt="Imagem do imóvel">
           <p><strong><?php echo htmlspecialchars($imovel['titulo']); ?></strong></p>
           <p><?php echo htmlspecialchars($imovel['localizacao']); ?> – <?php echo number_format($imovel['preco'], 2); ?>€</p>
 
@@ -169,19 +196,47 @@ $propostas_exemplo = [
     <?php endforeach; ?>
   </section>
 
+  <section class="mensagens">
+    <h2>Mensagens com o Agente</h2>
+
+    <?php
+    $stmt = $mensagensDB->prepare("SELECT * FROM mensagens 
+                                   WHERE (remetente = :user AND destinatario = 'agente') 
+                                      OR (remetente = 'agente' AND destinatario = :user)
+                                   ORDER BY data_envio ASC");
+    $stmt->bindValue(':user', $username);
+    $result = $stmt->execute();
+
+    while ($msg = $result->fetchArray(SQLITE3_ASSOC)): ?>
+      <div style="margin: 0.5rem 0;">
+        <strong><?= htmlspecialchars($msg['remetente']) ?>:</strong>
+        <?= htmlspecialchars($msg['mensagem']) ?>
+        <span style="font-size: 0.8rem; color: gray;">(<?= $msg['data_envio'] ?>)</span>
+      </div>
+    <?php endwhile; ?>
+
+    <form method="POST" style="margin-top: 1rem;">
+      <textarea name="mensagem" rows="3" style="width: 100%; padding: 0.5rem;" required placeholder="Escreve uma mensagem..."></textarea>
+      <button type="submit" style="margin-top: 0.5rem;">Enviar</button>
+    </form>
+  </section>
+
   <script>
     function verDetalhes(imovel) {
       const painel = document.getElementById("detalhes");
       const conteudo = document.getElementById("detalheConteudo");
 
+      const precoFormatado = parseFloat(imovel.preco).toLocaleString('pt-PT');
+
       conteudo.innerHTML = `
-        <img src="${imovel.imagem || '../images/casa1.jpg'}" alt="Imagem do imóvel" style="max-width: 100%; border-radius: 10px; margin-bottom: 1rem;">
+        <img src="../${imovel.imagem || 'images/casa1.jpg'}" alt="Imagem do imóvel" style="max-width: 100%; border-radius: 10px; margin-bottom: 1rem;">
         <p><strong>Título:</strong> ${imovel.titulo}</p>
         <p><strong>Localização:</strong> ${imovel.localizacao}</p>
-        <p><strong>Preço:</strong> ${parseFloat(imovel.preco).toLocaleString('pt-PT')}€</p>
+        <p><strong>Preço:</strong> ${precoFormatado}€</p>
+        
         <form method="POST" action="#">
           <label for="valor">Fazer Proposta (€):</label>
-          <input type="number" name="valor" required>
+          <input type="number" name="valor" step="5000" min="0" value="${imovel.preco}" required>
           <button type="submit">Fazer Proposta</button>
         </form>
       `;

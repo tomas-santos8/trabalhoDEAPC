@@ -1,41 +1,21 @@
-CREATE TABLE IF NOT EXISTS utilizadores (
+-- Criar tabela principal de imóveis
+CREATE TABLE imoveis (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT UNIQUE,
-    password TEXT,
-    tipo TEXT,
-    ultimo_acesso TEXT
-);
-
-CREATE TABLE IF NOT EXISTS imoveis (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    titulo TEXT,
+    titulo TEXT NOT NULL,
+    localizacao TEXT NOT NULL,
+    preco INTEGER NOT NULL,
     descricao TEXT,
-    preco REAL,
-    localizacao TEXT,
-    estado TEXT DEFAULT 'pendente',
-    id_vendedor INTEGER,
-    id_agente INTEGER,
-    FOREIGN KEY(id_vendedor) REFERENCES utilizadores(id),
-    FOREIGN KEY(id_agente) REFERENCES utilizadores(id)
+    imagem TEXT
 );
 
-CREATE TABLE IF NOT EXISTS propostas (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    imovel_id INTEGER,
-    comprador_id INTEGER,
-    mensagem TEXT,
-    valor REAL,
-    estado TEXT DEFAULT 'pendente',
-    FOREIGN KEY(imovel_id) REFERENCES imoveis(id),
-    FOREIGN KEY(comprador_id) REFERENCES utilizadores(id)
-);
+-- (Opcional) Criar tabela de propostas associadas a imóveis e compradores
+DROP TABLE IF EXISTS propostas;
 
-CREATE TABLE IF NOT EXISTS mensagens (
+CREATE TABLE propostas (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    de_id INTEGER,
-    para_id INTEGER,
-    conteudo TEXT,
-    data TEXT,
-    FOREIGN KEY(de_id) REFERENCES utilizadores(id),
-    FOREIGN KEY(para_id) REFERENCES utilizadores(id)
+    comprador_id INTEGER NOT NULL,
+    imovel_id INTEGER NOT NULL,
+    valor INTEGER NOT NULL,
+    estado TEXT DEFAULT 'Em análise',
+    FOREIGN KEY(imovel_id) REFERENCES imoveis(id)
 );
