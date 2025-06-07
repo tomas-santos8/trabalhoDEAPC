@@ -9,10 +9,10 @@ $imoveis = [
     ],
     [
         "imagem" => "images/casa3.jpg",
-        "localizacao" => "Lisboa",
-        "preco" => 450000,
+        "localizacao" => "Guimarães",
+        "preco" => 500000,
         "propostas" => 440000,
-        "descricao" => "casa de luxo."
+        "descricao" => "Moradia moderna perto do centro de Guimarães."
     ]
 ];
 
