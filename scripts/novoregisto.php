@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Abrir ou criar a base de dados
-    $db = new SQLite3(__DIR__ . '/../dados/app.db');
+    $db = new SQLite3(__DIR__ . '/../DADOS/imobiliaria.db');
 
     // Criar a tabela se ainda não existir
     $db->exec("CREATE TABLE IF NOT EXISTS utilizadores (

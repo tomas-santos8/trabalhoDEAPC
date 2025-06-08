@@ -16,6 +16,7 @@ $imoveis = [
     ]
 ];
 
+
 $mensagens = [
     "Agente: Temos uma nova proposta.",
     "Cliente: Gostaria de visitar a casa este sábado."
@@ -63,8 +64,8 @@ $mensagens = [
     <h1>Área do Vendedor</h1>
     <nav>
       <a href="index.html" class="btn">Início</a>
-      <a href="adicionar-imovel.html" class="btn">Adicionar Imóvel</a>
-      <a href="logout.html" class="btn">Sair</a>
+      <a href="adicionar_imoveis.php" class="btn">Adicionar Imóvel</a>
+      <a href="logout.php" class="btn">Sair</a>
     </nav>
   </header>
 

@@ -33,6 +33,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['mensagem'])) {
         $stmt->bindValue(':destinatario', 'agente');
         $stmt->bindValue(':mensagem', $mensagem);
         $stmt->execute();
+
+        header("Location: comprador.php");
+        exit;
     }
 }
 

@@ -9,8 +9,6 @@ CREATE TABLE imoveis (
 );
 
 -- (Opcional) Criar tabela de propostas associadas a imóveis e compradores
-DROP TABLE IF EXISTS propostas;
-
 CREATE TABLE propostas (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     comprador_id INTEGER NOT NULL,

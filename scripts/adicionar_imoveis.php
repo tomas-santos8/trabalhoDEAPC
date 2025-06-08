@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   <header>
     <h1>Imóveis CDT - Adicionar Imóvel</h1>
     <nav>
-      <a class="btn" href="comprador.php">Voltar</a>
+      <a class="btn" href="vendedor.php">Voltar</a>
     </nav>
   </header>
 
