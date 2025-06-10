@@ -1,14 +1,14 @@
 <?php
 $imoveis = [
     [
-        "imagem" => "images/casa2.jpg",
+        "imagem" => "images2/casa2.jpg",
         "localizacao" => "Cortegaça",
         "preco" => 450000,
         "propostas" => 400000,
         "descricao" => "Moradia moderna com 3 quartos, jardim e garagem."
     ],
     [
-        "imagem" => "images/casa3.jpg",
+        "imagem" => "images3/casa3.jpg",
         "localizacao" => "Lisboa",
         "preco" => 450000,
         "propostas" => 440000,
