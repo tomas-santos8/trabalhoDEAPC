@@ -1,20 +1,21 @@
 <?php
 $imoveis = [
     [
-        "imagem" => "../images2/casa1.jpg",
-        "localizacao" => "Gaia",
+        "imagem" => "..images2/casa1.jpg",
+        "localizacao" => "Cortegaça",
         "preco" => 450000,
         "propostas" => 400000,
-        "descricao" => "Moradia moderna com 3 quartos,4 casas de banho,piscina, jardim, garagem, cozinha moderna e uma sala de estar com bastante luminosidade."
-    ],
+        "descricao" => "Moradia moderna com 3 quartos, jardim e garagem." ], 
     [
-        "imagem" => "../images3/casa1.jpg",
+        "imagem" => "..images3/casa1.jpg",
         "localizacao" => "Lisboa",
         "preco" => 450000,
         "propostas" => 440000,
-        "descricao" => "casa de luxo perto do centro de lisboa."
+        "descricao" => "casa de luxo."
     ]
 ];
+
+
 $mensagens = [
     "Agente: Temos uma nova proposta.",
     "Cliente: Gostaria de visitar a casa este sábado."
