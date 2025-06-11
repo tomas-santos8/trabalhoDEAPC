@@ -2,20 +2,19 @@
 $imoveis = [
     [
         "imagem" => "../images2/casa1.jpg",
-        "localizacao" => "Gaia",
-        "preco" => 450000,
-        "propostas" => 400000,
-        "descricao" => "Moradia moderna com 3 quartos,4 casas de banho,piscina, jardim, garagem, cozinha moderna e uma sala de estar com bastante luminosidade."
+        "localizacao" => "Porto",
+        "preco" => 300000,
+        "propostas" => 280000,
+        "descricao" => "Moradia moderna com 3 quartos, jardim e garagem."
     ],
     [
         "imagem" => "../images3/casa1.jpg",
         "localizacao" => "Lisboa",
         "preco" => 450000,
         "propostas" => 440000,
-        "descricao" => "casa de luxo perto do centro de lisboa."
+        "descricao" => "Apartamento T2 no centro com varanda e vista rio."
     ]
 ];
-
 
 $mensagens = [
     "Agente: Temos uma nova proposta.",
@@ -64,8 +63,8 @@ $mensagens = [
     <h1>Área do Vendedor</h1>
     <nav>
       <a href="index.html" class="btn">Início</a>
-      <a href="adicionar_imoveis.php" class="btn">Adicionar Imóvel</a>
-      <a href="logout.php" class="btn">Sair</a>
+      <a href="adicionar-imovel.html" class="btn">Adicionar Imóvel</a>
+      <a href="logout.html" class="btn">Sair</a>
     </nav>
   </header>
 
@@ -101,13 +100,13 @@ $mensagens = [
       const detalhes = document.getElementById('detalhes');
       const conteudo = document.getElementById('detalhe-conteudo');
 
-      conteudo.innerHTML = 
+      conteudo.innerHTML = `
         <img src="${imovel.imagem}" alt="Imagem" style="max-width: 100%; height: auto;">
         <p><strong>Localização:</strong> ${imovel.localizacao}</p>
         <p><strong>Preço:</strong> ${imovel.preco.toLocaleString('pt-PT')}€</p>
         <p><strong>Propostas Recebidas:</strong> ${imovel.propostas.toLocaleString('pt-PT')}€</p>
         <p><strong>Descrição:</strong> ${imovel.descricao}</p>
-      ;
+      `;
       detalhes.style.display = 'block';
     }
 
