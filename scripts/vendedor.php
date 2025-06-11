@@ -2,19 +2,18 @@
 $imoveis = [
     [
         "imagem" => "../images2/casa1.jpg",
-        "localizacao" => "Cortegaça",
+        "localizacao" => "Gaia",
         "preco" => 450000,
         "propostas" => 400000,
-        "descricao" => "Moradia moderna com 3 quartos, jardim e garagem." ], 
+        "descricao" => "Moradia moderna com 3 quartos,4 casas de banho,piscina, jardim e garagem." ], 
     [
         "imagem" => "../images3/casa1.jpg",
         "localizacao" => "Lisboa",
         "preco" => 450000,
         "propostas" => 440000,
-        "descricao" => "casa de luxo."
+        "descricao" => "Moradia de luxo perto do centro de lisboa."
     ]
 ];
-
 
 $mensagens = [
     "Agente: Temos uma nova proposta.",
@@ -39,7 +38,7 @@ $mensagens = [
     #detalhes {
       background-color: #f4f4f4;
       border-left: 2px solid #ccc;
-      display: none; /* escondido até clicar */
+      display: none;
     }
     #fecharDetalhes {
       background: black;
@@ -55,6 +54,26 @@ $mensagens = [
     }
     #fecharDetalhes:hover {
       background: #333;
+    }
+
+    .btn-remover {
+      background-color: black;
+      color: white;
+      border: none;
+      padding: 0.3rem 0.7rem;
+      margin-left: 0.5rem;
+      cursor: pointer;
+      border-radius: 3px;
+      font-size: 0.9rem;
+      transition: background-color 0.3s ease;
+    }
+    .btn-remover:hover {
+      background-color: #333;
+    }
+
+    article.imovel button {
+      margin-top: 0.5rem;
+      margin-right: 5px;
     }
   </style>
 </head>
@@ -74,11 +93,12 @@ $mensagens = [
       <h2>Meus Imóveis</h2>
       <?php foreach ($imoveis as $index => $imovel): ?>
         <article class="imovel">
-          <img src="<?= $imovel['imagem'] ?>" alt="Imagem do imóvel">
+          <img src="<?= $imovel['imagem'] ?>" alt="Imagem do imóvel" style="max-width: 100%; height: auto;">
           <p><strong>Localização:</strong> <?= htmlspecialchars($imovel['localizacao']) ?></p>
           <p><strong>Preço:</strong> <?= number_format($imovel['preco'], 0, ',', '.') ?>€</p>
           <p><strong>Propostas Recebidas:</strong> <?= number_format($imovel['propostas'], 0, ',', '.') ?>€</p>
           <button onclick='verDetalhes(<?= htmlspecialchars(json_encode($imovel)) ?>)'>Ver Detalhes</button>
+          <button class="btn-remover" onclick="removerImovel(this)">Remover</button>
         </article>
       <?php endforeach; ?>
     </section>
@@ -109,12 +129,26 @@ $mensagens = [
       `;
       detalhes.style.display = 'block';
     }
+
+    function removerImovel(botao) {
+      const artigo = botao.closest('article');
+      if (confirm("Tem certeza de que deseja remover este imóvel?")) {
+        const imgRemovida = artigo.querySelector("img").src;
+        const imgDetalhe = document.querySelector("#detalhe-conteudo img");
+
+        artigo.remove();
+
+        // Se o imóvel removido está nos detalhes, limpar
+        if (imgDetalhe && imgDetalhe.src === imgRemovida) {
+          document.getElementById('detalhes').style.display = 'none';
+          document.getElementById('detalhe-conteudo').innerHTML = '<p>Seleciona um imóvel para ver os detalhes.</p>';
+        }
+      }
+    }
+
     document.getElementById('fecharDetalhes').addEventListener('click', () => {
       document.getElementById('detalhes').style.display = 'none';
     });
   </script>
 </body>
 </html>
-
-
-
