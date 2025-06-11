@@ -1,20 +1,20 @@
 <?php
 $imoveis = [
     [
-        "imagem" => "../images2/casa1.jpg",
-        "localizacao" => "Gaia",
-        "preco" => 500000,
-        "propostas" => 480000,
-        "descricao" => "Moradia moderna com 3 quartos,4 casas de banho,piscina, jardim, garagem, cozinha moderna e uma sala de estar com bastante luminosidade."
-    ],
+        "imagem" => "images2/casa1.jpg",
+        "localizacao" => "Cortegaça",
+        "preco" => 450000,
+        "propostas" => 400000,
+        "descricao" => "Moradia moderna com 3 quartos, jardim e garagem." ], 
     [
-        "imagem" => "../images3/casa1.jpg",
+        "imagem" => "images3/casa1.jpg",
         "localizacao" => "Lisboa",
         "preco" => 450000,
         "propostas" => 440000,
-        "descricao" => "casa de luxo perto do centro de lisboa."
+        "descricao" => "casa de luxo."
     ]
 ];
+
 
 $mensagens = [
     "Agente: Temos uma nova proposta.",
@@ -56,25 +56,6 @@ $mensagens = [
     #fecharDetalhes:hover {
       background: #333;
     }
-    /* Estilo para o botão remover */
-    .btn-remover {
-      background-color: black;
-      color: white;
-      border: none;
-      padding: 0.3rem 0.7rem;
-      margin-left: 0.5rem;
-      cursor: pointer;
-      border-radius: 3px;
-      font-size: 0.9rem;
-      transition: background-color 0.3s ease;
-    }
-    .btn-remover:hover {
-      background-color: #333;
-    }
-    /* Um pouco de margem entre os botões */
-    article.imovel button {
-      margin-top: 0.5rem;
-    }
   </style>
 </head>
 <body>
@@ -82,8 +63,8 @@ $mensagens = [
     <h1>Área do Vendedor</h1>
     <nav>
       <a href="index.html" class="btn">Início</a>
-      <a href="adicionar-imovel.html" class="btn">Adicionar Imóvel</a>
-      <a href="logout.html" class="btn">Sair</a>
+      <a href="adicionar_imoveis.php" class="btn">Adicionar Imóvel</a>
+      <a href="logout.php" class="btn">Sair</a>
     </nav>
   </header>
 
@@ -98,7 +79,6 @@ $mensagens = [
           <p><strong>Preço:</strong> <?= number_format($imovel['preco'], 0, ',', '.') ?>€</p>
           <p><strong>Propostas Recebidas:</strong> <?= number_format($imovel['propostas'], 0, ',', '.') ?>€</p>
           <button onclick='verDetalhes(<?= htmlspecialchars(json_encode($imovel)) ?>)'>Ver Detalhes</button>
-          <button class="btn-remover" onclick='removerImovel(this)'>Remover</button>
         </article>
       <?php endforeach; ?>
     </section>
@@ -129,27 +109,12 @@ $mensagens = [
       `;
       detalhes.style.display = 'block';
     }
-
-    function removerImovel(botao) {
-      const artigo = botao.closest('article');
-      if (confirm("Tem certeza de que deseja remover este imóvel?")) {
-        artigo.remove();
-
-        // Se o painel de detalhes estiver visível com esse imóvel, escondê-lo
-        const detalhes = document.getElementById('detalhes');
-        const imgSrc = artigo.querySelector('img').src;
-        const detalheImg = document.querySelector('#detalhe-conteudo img');
-        if (detalheImg && detalheImg.src === imgSrc) {
-          detalhes.style.display = 'none';
-          document.getElementById('detalhe-conteudo').innerHTML = '<p>Seleciona um imóvel para ver os detalhes.</p>';
-        }
-      }
-    }
-
     document.getElementById('fecharDetalhes').addEventListener('click', () => {
       document.getElementById('detalhes').style.display = 'none';
     });
   </script>
 </body>
 </html>
+
+
 
