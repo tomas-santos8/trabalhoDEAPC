@@ -2,17 +2,17 @@
 $imoveis = [
     [
         "imagem" => "../images2/casa1.jpg",
-        "localizacao" => "Porto",
-        "preco" => 300000,
-        "propostas" => 280000,
-        "descricao" => "Moradia moderna com 3 quartos, jardim e garagem."
+        "localizacao" => "Gaia",
+        "preco" => 500000,
+        "propostas" => 480000,
+        "descricao" => "Moradia moderna com 3 quartos,4 casas de banho,piscina, jardim, garagem, cozinha moderna e uma sala de estar com bastante luminosidade."
     ],
     [
         "imagem" => "../images3/casa1.jpg",
         "localizacao" => "Lisboa",
         "preco" => 450000,
         "propostas" => 440000,
-        "descricao" => "Apartamento T2 no centro com varanda e vista rio."
+        "descricao" => "casa de luxo perto do centro de lisboa."
     ]
 ];
 
@@ -56,6 +56,25 @@ $mensagens = [
     #fecharDetalhes:hover {
       background: #333;
     }
+    /* Estilo para o botão remover */
+    .btn-remover {
+      background-color: black;
+      color: white;
+      border: none;
+      padding: 0.3rem 0.7rem;
+      margin-left: 0.5rem;
+      cursor: pointer;
+      border-radius: 3px;
+      font-size: 0.9rem;
+      transition: background-color 0.3s ease;
+    }
+    .btn-remover:hover {
+      background-color: #333;
+    }
+    /* Um pouco de margem entre os botões */
+    article.imovel button {
+      margin-top: 0.5rem;
+    }
   </style>
 </head>
 <body>
@@ -79,6 +98,7 @@ $mensagens = [
           <p><strong>Preço:</strong> <?= number_format($imovel['preco'], 0, ',', '.') ?>€</p>
           <p><strong>Propostas Recebidas:</strong> <?= number_format($imovel['propostas'], 0, ',', '.') ?>€</p>
           <button onclick='verDetalhes(<?= htmlspecialchars(json_encode($imovel)) ?>)'>Ver Detalhes</button>
+          <button class="btn-remover" onclick='removerImovel(this)'>Remover</button>
         </article>
       <?php endforeach; ?>
     </section>
@@ -108,6 +128,22 @@ $mensagens = [
         <p><strong>Descrição:</strong> ${imovel.descricao}</p>
       `;
       detalhes.style.display = 'block';
+    }
+
+    function removerImovel(botao) {
+      const artigo = botao.closest('article');
+      if (confirm("Tem certeza de que deseja remover este imóvel?")) {
+        artigo.remove();
+
+        // Se o painel de detalhes estiver visível com esse imóvel, escondê-lo
+        const detalhes = document.getElementById('detalhes');
+        const imgSrc = artigo.querySelector('img').src;
+        const detalheImg = document.querySelector('#detalhe-conteudo img');
+        if (detalheImg && detalheImg.src === imgSrc) {
+          detalhes.style.display = 'none';
+          document.getElementById('detalhe-conteudo').innerHTML = '<p>Seleciona um imóvel para ver os detalhes.</p>';
+        }
+      }
     }
 
     document.getElementById('fecharDetalhes').addEventListener('click', () => {
