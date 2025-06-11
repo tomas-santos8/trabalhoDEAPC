@@ -1,14 +1,22 @@
 <?php
+session_start();
+
+// Exemplo simples de sessão para simular login
+if (!isset($_SESSION['user'])) {
+    $_SESSION['user'] = 'vendedor1'; // só para exemplo, em app real faz login real
+}
+
+// Dados simulados de imóveis e mensagens
 $imoveis = [
     [
-        "imagem" => "../images2/casa1.jpg",
+        "imagem" => "images2/casa1.jpg",
         "localizacao" => "Gaia",
         "preco" => 500000,
         "propostas" => 480000,
         "descricao" => "Moradia moderna com 3 quartos,4 casas de banho,piscina, jardim, garagem, cozinha moderna e uma sala de estar com bastante luminosidade."
     ],
     [
-        "imagem" => "../images3/casa1.jpg",
+        "imagem" => "images3/casa1.jpg",
         "localizacao" => "Lisboa",
         "preco" => 450000,
         "propostas" => 440000,
@@ -27,7 +35,7 @@ $mensagens = [
 <head>
   <meta charset="UTF-8">
   <title>Área do Vendedor</title>
-  <link rel="stylesheet" href="../styles/modelo.css">
+  <link rel="stylesheet" href="styles/modelo.css">
   <style>
     .container {
       display: flex;
@@ -75,6 +83,21 @@ $mensagens = [
     article.imovel button {
       margin-top: 0.5rem;
     }
+
+    /* Botões do menu */
+    .btn {
+      background-color: black;
+      color: white;
+      padding: 0.5rem 1rem;
+      text-decoration: none;
+      border-radius: 4px;
+      margin-right: 10px;
+      display: inline-block;
+      transition: background-color 0.3s ease;
+    }
+    .btn:hover {
+      background-color: #333;
+    }
   </style>
 </head>
 <body>
@@ -83,7 +106,7 @@ $mensagens = [
     <nav>
       <a href="index.html" class="btn">Início</a>
       <a href="adicionar-imovel.html" class="btn">Adicionar Imóvel</a>
-      <a href="logout.html" class="btn">Sair</a>
+      <a href="logout.php" class="btn">Sair</a>
     </nav>
   </header>
 
@@ -93,7 +116,7 @@ $mensagens = [
       <h2>Meus Imóveis</h2>
       <?php foreach ($imoveis as $index => $imovel): ?>
         <article class="imovel">
-          <img src="<?= $imovel['imagem'] ?>" alt="Imagem do imóvel">
+          <img src="<?= htmlspecialchars($imovel['imagem']) ?>" alt="Imagem do imóvel" style="max-width: 100%; height: auto;">
           <p><strong>Localização:</strong> <?= htmlspecialchars($imovel['localizacao']) ?></p>
           <p><strong>Preço:</strong> <?= number_format($imovel['preco'], 0, ',', '.') ?>€</p>
           <p><strong>Propostas Recebidas:</strong> <?= number_format($imovel['propostas'], 0, ',', '.') ?>€</p>
