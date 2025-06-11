@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['mensagem'])) {
     }
 }
 
-// ✅ Propostas fictícias mantidas
+//  Propostas fictícias mantidas
 $propostas_exemplo = [
     ['titulo' => 'Moradia A', 'estado' => 'Em análise'],
     ['titulo' => 'Apartamento B', 'estado' => 'Aceite']

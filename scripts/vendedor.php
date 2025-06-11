@@ -1,24 +1,14 @@
 <?php
-$imoveis = [
-    [
-        "imagem" => "../images2/casa1.jpg",
-        "localizacao" => "Gaia",
-        "preco" => 450000,
-        "propostas" => 400000,
-        "descricao" => "Moradia moderna com 3 quartos,4 casas de banho,piscina, jardim e garagem." ], 
-    [
-        "imagem" => "../images3/casa1.jpg",
-        "localizacao" => "Lisboa",
-        "preco" => 450000,
-        "propostas" => 440000,
-        "descricao" => "Moradia de luxo perto do centro de lisboa."
-    ]
-];
 
-$mensagens = [
-    "Agente: Temos uma nova proposta.",
-    "Cliente: Gostaria de visitar a casa este sábado."
-];
+// Conexão com a base de dados de imóveis
+$db = new SQLite3('../DADOS/imoveis.db');
+$result = $db->query("SELECT * FROM imoveis");
+
+// Carregar os imóveis da base para o array
+$imoveis = [];
+while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+    $imoveis[] = $row;
+}
 ?>
 
 <!DOCTYPE html>
@@ -31,15 +21,18 @@ $mensagens = [
     .container {
       display: flex;
     }
+
     .coluna {
       flex: 1;
       padding: 1rem;
     }
+
     #detalhes {
       background-color: #f4f4f4;
       border-left: 2px solid #ccc;
       display: none;
     }
+
     #fecharDetalhes {
       background: black;
       color: white;
@@ -50,10 +43,6 @@ $mensagens = [
       line-height: 1;
       padding: 0 0.5rem;
       border-radius: 3px;
-      transition: background-color 0.3s ease;
-    }
-    #fecharDetalhes:hover {
-      background: #333;
     }
 
     .btn-remover {
@@ -65,15 +54,28 @@ $mensagens = [
       cursor: pointer;
       border-radius: 3px;
       font-size: 0.9rem;
-      transition: background-color 0.3s ease;
-    }
-    .btn-remover:hover {
-      background-color: #333;
     }
 
-    article.imovel button {
+    .imovel {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .imovel img {
+      max-width: 100%;
+      border-radius: 5px;
+      margin-bottom: 0.5rem;
+    }
+
+    .imovel p {
+      margin: 0.3rem 0;
+    }
+
+    .imovel button {
       margin-top: 0.5rem;
-      margin-right: 5px;
     }
   </style>
 </head>
@@ -91,16 +93,21 @@ $mensagens = [
     <!-- Coluna dos imóveis -->
     <section class="coluna">
       <h2>Meus Imóveis</h2>
-      <?php foreach ($imoveis as $index => $imovel): ?>
-        <article class="imovel">
-          <img src="<?= $imovel['imagem'] ?>" alt="Imagem do imóvel" style="max-width: 100%; height: auto;">
-          <p><strong>Localização:</strong> <?= htmlspecialchars($imovel['localizacao']) ?></p>
-          <p><strong>Preço:</strong> <?= number_format($imovel['preco'], 0, ',', '.') ?>€</p>
-          <p><strong>Propostas Recebidas:</strong> <?= number_format($imovel['propostas'], 0, ',', '.') ?>€</p>
-          <button onclick='verDetalhes(<?= htmlspecialchars(json_encode($imovel)) ?>)'>Ver Detalhes</button>
-          <button class="btn-remover" onclick="removerImovel(this)">Remover</button>
-        </article>
-      <?php endforeach; ?>
+
+      <?php if (empty($imoveis)): ?>
+        <p>Nenhum imóvel disponível.</p>
+      <?php else: ?>
+        <?php foreach ($imoveis as $imovel): ?>
+          <article class="imovel">
+            <img src="../<?= htmlspecialchars($imovel['imagem']) ?>" alt="Imagem do imóvel">
+            <p><strong>Título:</strong> <?= htmlspecialchars($imovel['titulo']) ?></p>
+            <p><strong>Localização:</strong> <?= htmlspecialchars($imovel['localizacao']) ?></p>
+            <p><strong>Preço:</strong> <?= number_format($imovel['preco'], 0, ',', '.') ?>€</p>
+            <p><strong>Descrição:</strong> <?= htmlspecialchars($imovel['descricao']) ?></p>
+            <button onclick='verDetalhes(<?= json_encode($imovel) ?>)'>Ver Detalhes</button>
+          </article>
+        <?php endforeach; ?>
+      <?php endif; ?>
     </section>
 
     <!-- Coluna dos detalhes -->
@@ -121,29 +128,14 @@ $mensagens = [
       const conteudo = document.getElementById('detalhe-conteudo');
 
       conteudo.innerHTML = `
-        <img src="${imovel.imagem}" alt="Imagem" style="max-width: 100%; height: auto;">
+        <img src="../${imovel.imagem}" alt="Imagem do imóvel" style="max-width: 100%; margin-bottom: 1rem;">
+        <p><strong>Título:</strong> ${imovel.titulo}</p>
         <p><strong>Localização:</strong> ${imovel.localizacao}</p>
-        <p><strong>Preço:</strong> ${imovel.preco.toLocaleString('pt-PT')}€</p>
-        <p><strong>Propostas Recebidas:</strong> ${imovel.propostas.toLocaleString('pt-PT')}€</p>
+        <p><strong>Preço:</strong> ${Number(imovel.preco).toLocaleString('pt-PT')}€</p>
         <p><strong>Descrição:</strong> ${imovel.descricao}</p>
       `;
+
       detalhes.style.display = 'block';
-    }
-
-    function removerImovel(botao) {
-      const artigo = botao.closest('article');
-      if (confirm("Tem certeza de que deseja remover este imóvel?")) {
-        const imgRemovida = artigo.querySelector("img").src;
-        const imgDetalhe = document.querySelector("#detalhe-conteudo img");
-
-        artigo.remove();
-
-        // Se o imóvel removido está nos detalhes, limpar
-        if (imgDetalhe && imgDetalhe.src === imgRemovida) {
-          document.getElementById('detalhes').style.display = 'none';
-          document.getElementById('detalhe-conteudo').innerHTML = '<p>Seleciona um imóvel para ver os detalhes.</p>';
-        }
-      }
     }
 
     document.getElementById('fecharDetalhes').addEventListener('click', () => {
