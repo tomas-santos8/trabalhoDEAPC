@@ -2,17 +2,17 @@
 $imoveis = [
     [
         "imagem" => "../images2/casa1.jpg",
-        "localizacao" => "Cortegaça",
+        "localizacao" => "Gaia",
         "preco" => 450000,
         "propostas" => 400000,
-        "descricao" => "Moradia moderna com 3 quartos, jardim e garagem."
+        "descricao" => "Moradia moderna com 3 quartos,4 casas de banho,piscina, jardim, garagem, cozinha moderna e uma sala de estar com bastante luminosidade."
     ],
     [
         "imagem" => "../images3/casa1.jpg",
         "localizacao" => "Lisboa",
         "preco" => 450000,
         "propostas" => 440000,
-        "descricao" => "casa de luxo."
+        "descricao" => "casa de luxo perto do centro de lisboa."
     ]
 ];
 
