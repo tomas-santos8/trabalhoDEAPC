@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     header("Location: ../scripts/vendedor.php");
                     break;
                 case 'agente':
-                    header("Location: ../HTML/agente.html");
+                    header("Location: ../scripts/agente.php");
                     break;
             }
             exit;
