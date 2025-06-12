@@ -81,7 +81,7 @@ $result = $db->query("SELECT * FROM imoveis");
     <?php endwhile; ?>
 
     <div class="btn-voltar">
-      <a class="btn" href="comprador.php">← Voltar</a>
+      <a class="btn" href="agente.php">← Voltar</a>
     </div>
   </div>
 </body>

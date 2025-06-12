@@ -90,6 +90,21 @@ while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
     nav a:hover {
       background-color: #0097e6;
     }
+
+    .card button {
+      background-color: #44bd32;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      margin-top: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .card button:hover {
+      background-color: #4cd137;
+    }
   </style>
 </head>
 <body>
@@ -103,14 +118,11 @@ while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
 
   <main class="container">
 
-    <!-- Validação de propriedades fictícias -->
+    <!-- ✅ Propriedades para Validar com botão -->
     <section class="card">
       <h2>Propriedades para Validar</h2>
-      <p>(Funcionalidade demonstrativa — integrar com base real se necessário)</p>
-      <ul>
-        <li>Moradia T3 - Aveiro <button onclick="alert('✅ Validado!')">Validar</button></li>
-        <li>Apartamento T2 - Porto <button onclick="alert('✅ Validado!')">Validar</button></li>
-      </ul>
+      <p>Clique no botão abaixo para listar e validar propostas de imóveis:</p>
+      <button onclick="window.location.href='listar_imoveis.php'">🔍 Listar Propriedades</button>
     </section>
 
     <!-- Mensagens -->
@@ -140,9 +152,7 @@ while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
         <button type="submit">Enviar</button>
       </form>
 
-      <form method="GET" style="margin-top: 0.5rem;">
-        <button type="submit">🔄 Atualizar mensagens</button>
-      </form>
+      
     </section>
   </main>
 </body>
