@@ -83,7 +83,7 @@ while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
   <header>
     <h1>Área do Vendedor</h1>
     <nav>
-      <a href="index.html" class="btn">Início</a>
+      <a href="../HTML/index.html" class="btn">Início</a>
       <a href="adicionar_imoveis.php" class="btn">Adicionar Imóvel</a>
       <a href="logout.php" class="btn">Sair</a>
     </nav>

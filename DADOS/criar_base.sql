@@ -1,5 +1,5 @@
 -- Criar tabela principal de imóveis
-CREATE TABLE imoveis (
+CREATE TABLE IF NOT EXISTS imoveis (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     titulo TEXT NOT NULL,
     localizacao TEXT NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE imoveis (
 );
 
 -- (Opcional) Criar tabela de propostas associadas a imóveis e compradores
-CREATE TABLE propostas (
+CREATE TABLE IF NOT EXISTS propostas (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     comprador_id INTEGER NOT NULL,
     imovel_id INTEGER NOT NULL,
